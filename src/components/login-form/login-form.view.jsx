@@ -13,7 +13,9 @@ const LoginFormView = props => {
                 onSubmit(value.username);
             }
         })
-    }
+    };
+    console.log(props);
+
     return (
         <div className='login-form'>
             <div className="title">Login</div>

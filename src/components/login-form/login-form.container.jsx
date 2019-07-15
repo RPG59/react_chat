@@ -4,27 +4,30 @@ import { connect } from "react-redux";
 import { Actions } from "../../redux/actions";
 import { Redirect } from "react-router-dom";
 
+const INVALID_USER_MESSAGE = 'Invalid user!';
+const INVALID_USER_TYPE = 'INVALID';
+
 class LoginForm extends React.Component {
     constructor(props) {
         super(props);
-        this.isRedirect = false;
+        this.errorMessage = '';
     }
 
     onSubmit = async username => {
-        try {
-            this.props.loginUser(username);
-            this.isRedirect = true;
-        } catch (e) {
-            console.log(e);
-            // TODO: error handle
-        }
+        this.props.loginUser(username);
     };
 
     render() {
-        if (this.isRedirect)
+        const {user} = this.props;
+        if (user.userId === INVALID_USER_TYPE)
+            this.errorMessage = INVALID_USER_MESSAGE;
+        else
+            this.errorMessage = '';
+
+        if (user.userId && user.userId !== INVALID_USER_TYPE)
             return <Redirect to='/chat'/>
 
-        return <LoginFormView onSubmit={this.onSubmit}/>
+        return <LoginFormView onSubmit={this.onSubmit} errorMessage={this.errorMessage}/>
     }
 
 }
