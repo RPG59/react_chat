@@ -1,6 +1,8 @@
 import React from 'react';
 import ChatMessage from "./chat-message";
 
+import './chat-area.sass'
+
 const ChatAreaView = props => {
     const {messages, currentUser, otherUser} = props;
 

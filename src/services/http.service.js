@@ -33,6 +33,20 @@ const _CHATS_ = {
     ]
 };
 
+const _MESSAGES_ = {
+    33: [
+        {
+            userId: 3,
+            text: 'hy!'
+        },
+        {
+            userId: 1,
+            text: 'How are you'
+        }
+    ],
+    1212: []
+};
+
 export class HttpService {
     static login(username) {
         return new Promise((res, rej) => {
@@ -59,21 +73,17 @@ export class HttpService {
 
     static fetchMessages(chatId) {
         return new Promise((res) => {
-            const chats = {
-                33: [
-                    {
-                        userId: 3,
-                        text: 'hy!'
-                    },
-                    {
-                        userId: 1,
-                        text: 'How are you'
-                    }
-                ],
-                1212: []
-            };
+            res(_MESSAGES_[chatId]);
+        });
+    }
 
-            res(chats[chatId]);
+    static sendMessage(chatId, message) {
+        return new Promise(res => {
+            if (_MESSAGES_.hasOwnProperty(chatId)) {
+                _MESSAGES_[chatId].push(message);
+                console.log(_MESSAGES_);
+                res();
+            }
         });
     }
 }

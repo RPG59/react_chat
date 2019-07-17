@@ -14,32 +14,32 @@ class ChatArea extends React.Component {
 
     }
 
-    componentWillMount() {
-        const {currentUser, messages} = this.props;
+    componentWillReceiveProps(nextProps) {
+        const {currentUser, chatData} = nextProps;
         const currentUserId = currentUser.userId;
-        const otherUserMessage = messages.find(message => message.userId !== currentUserId);
+        const otherUserMessage = chatData.messages.find(message => message.userId !== currentUserId);
         if (otherUserMessage && otherUserMessage.userId && this.state.otherUser === null) {
             this.isLoading = true;
             HttpService.fetchUser(otherUserMessage.userId).then(user => {
                 this.isLoading = false;
-                this.setState({otherUser: null});
+                this.setState({otherUser: user});
             });
         }
     }
 
 
     render() {
-        const {currentUser, messages} = this.props;
+        const {currentUser, chatData} = this.props;
         if (this.isLoading) {
             return <div>Loading ...</div>
         }
 
-        return <ChatAreaView currentUser={currentUser} otherUser={this.state.otherUser} messages={messages}/>;
+        return <ChatAreaView currentUser={currentUser} otherUser={this.state.otherUser} messages={chatData.messages}/>;
     }
 
 };
 
 export default connect(props => ({
     currentUser: props.user,
-    messages: props.messages
+    chatData: props.messages
 }))(ChatArea);

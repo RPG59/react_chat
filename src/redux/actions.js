@@ -11,7 +11,7 @@ export class Actions {
 
     static setInvalidUser = () => ({
         type: INVALID_USER,
-        payload: {userId: 'INVALID', username: null, avatar: null}
+        payload: {errorMsg: 'Invalid username'}
     });
 
     static loginUser = username => dispatch => {
@@ -20,7 +20,6 @@ export class Actions {
                 dispatch(Actions.setUserData(user));
             })
             .catch(err => {
-                console.log(err);
                 dispatch(Actions.setInvalidUser());
             });
     };
@@ -37,15 +36,18 @@ export class Actions {
             });
     };
 
-    static updateMessages = chatsData => ({
+    static updateMessages = (messages, chatId) => ({
         type: UPDATE_MESSAGES,
-        payload: chatsData
+        payload: {
+            messages,
+            chatId
+        }
     });
 
     static fetchMessages = chatId => dispatch => {
         HttpService.fetchMessages(chatId)
             .then(messages => {
-                dispatch(Actions.updateMessages(messages));
+                dispatch(Actions.updateMessages(messages, chatId));
             });
     };
 }

@@ -4,7 +4,8 @@ export const INVALID_USER = 'INVALID_USER';
 const initialState = {
     userId: null,
     username: null,
-    avatar: null
+    avatar: null,
+    errorMsg: null
 };
 
 export function userReducer(state = initialState, action) {
@@ -17,7 +18,10 @@ export function userReducer(state = initialState, action) {
                 avatar: action.payload.avatar
             };
         case INVALID_USER:
-            return action.payload;
+            return {
+                ...state,
+                errorMsg: action.payload.errorMsg
+            };
         case LOGOUT_USER:
             return state;
         default:

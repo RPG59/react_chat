@@ -1,10 +1,11 @@
 import React from 'react';
+import './chat-message.sass'
 
 const ChatMessageView = props => {
     const {message, avatar, username, isOwnMessage} = props;
 
     return (
-        <div className="chat-message">
+        <div className={isOwnMessage ? 'chat-message own-message' : 'chat-message'}>
             <div className="user-info">
                 <img src={avatar} alt="user-avatar"/>
                 <div className="user-name">{username}</div>
