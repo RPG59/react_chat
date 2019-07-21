@@ -1,41 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatAreaView from "./chat-area.view";
 import { connect } from "react-redux";
 import { HttpService } from "../../services/http.service";
 
-class ChatArea extends React.Component {
-    constructor(props) {
-        super(props);
+const ChatArea = props => {
+    const {currentUser, chatData} = props;
+    const [otherUser, setOtherUser] = useState(null);
+    const [isLoading, setLoadingStatus] = useState(false);
 
-        this.state = {
-            otherUser: null
-        };
-        this.isLoading = false;
-
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const {currentUser, chatData} = nextProps;
+    useEffect(() => {
+        const {currentUser, chatData} = props;
         const currentUserId = currentUser.userId;
         const otherUserMessage = chatData.messages.find(message => message.userId !== currentUserId);
-        if (otherUserMessage && otherUserMessage.userId && this.state.otherUser === null) {
-            this.isLoading = true;
+        if (otherUserMessage && otherUserMessage.userId && otherUser === null) {
+            setLoadingStatus(true);
             HttpService.fetchUser(otherUserMessage.userId).then(user => {
-                this.isLoading = false;
-                this.setState({otherUser: user});
+                setLoadingStatus(false);
+                setOtherUser(user);
             });
         }
+    }, [props]);
+
+
+    if (isLoading) {
+        return <div>Loading ...</div>
     }
 
-
-    render() {
-        const {currentUser, chatData} = this.props;
-        if (this.isLoading) {
-            return <div>Loading ...</div>
-        }
-
-        return <ChatAreaView currentUser={currentUser} otherUser={this.state.otherUser} messages={chatData.messages}/>;
-    }
+    return <ChatAreaView currentUser={currentUser} otherUser={otherUser} messages={chatData.messages}/>;
 
 };
 
