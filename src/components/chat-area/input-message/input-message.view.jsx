@@ -14,6 +14,7 @@ class InputMessageView extends React.Component {
 
     textSendHandler = () => {
         this.props.textSendHandler(this.state.textInput);
+        this.setState({textInput: ''});
     };
 
     inputOnChange = event => {
@@ -35,12 +36,11 @@ class InputMessageView extends React.Component {
         return (
             <div className="input-message">
                 <div className="input-container">
-                    <Input onChange={this.inputOnChange}/>
+                    <Input onChange={this.inputOnChange} value={this.state.textInput}/>
                     <Icon type="right" onClick={this.textSendHandler}/>
                     {
                         !this.state.isSoundRecord ? <Icon type="audio" onClick={this.startSoundRecord}/> :
                             <Icon type="stop" onClick={this.endSoundRecord}/>
-
                     }
                 </div>
             </div>
@@ -50,3 +50,4 @@ class InputMessageView extends React.Component {
 };
 
 export default InputMessageView;
+

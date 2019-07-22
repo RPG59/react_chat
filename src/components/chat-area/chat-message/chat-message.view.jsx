@@ -3,6 +3,12 @@ import './chat-message.sass'
 
 const ChatMessageView = props => {
     const {message, avatar, username, isOwnMessage} = props;
+    const playAuio = () => {
+        const audio = new Audio(URL.createObjectURL(message.audio))
+        console.log(message);
+        console.log(audio);
+        // audio.play();
+    }
 
     return (
         <div className={isOwnMessage ? 'chat-message own-message' : 'chat-message'}>
@@ -12,6 +18,9 @@ const ChatMessageView = props => {
             </div>
             <div className="message-content">
                 <div className="messages-text">{message.text}</div>
+                {
+                    message.audio ? <div className="message-audio" onClick={playAuio}>play</div> : null
+                }
             </div>
         </div>
     )

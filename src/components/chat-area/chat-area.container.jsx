@@ -9,9 +9,11 @@ const ChatArea = props => {
     const [isLoading, setLoadingStatus] = useState(false);
 
     useEffect(() => {
-        const {currentUser, chatData} = props;
+        if (!chatData || !chatData.chatIdi) return;
+
         const currentUserId = currentUser.userId;
         const otherUserMessage = chatData.messages.find(message => message.userId !== currentUserId);
+
         if (otherUserMessage && otherUserMessage.userId && otherUser === null) {
             setLoadingStatus(true);
             HttpService.fetchUser(otherUserMessage.userId).then(user => {
@@ -25,6 +27,9 @@ const ChatArea = props => {
     if (isLoading) {
         return <div>Loading ...</div>
     }
+
+    if (!chatData || !chatData.chatId)
+        return <div>Please, select chat</div>
 
     return <ChatAreaView currentUser={currentUser} otherUser={otherUser} messages={chatData.messages}/>;
 
