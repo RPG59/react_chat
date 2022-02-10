@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "antd": "^3.20.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-thunk": "^1.0.0",
